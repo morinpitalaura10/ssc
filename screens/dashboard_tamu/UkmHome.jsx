@@ -3,12 +3,12 @@ import { View, Text, ScrollView, Image } from "react-native";
 import { GlobalStyles, Colors } from "../../styles/GlobalStyles";
 import CardBg from "../../components/molecules/CardBg";
 import NavBotPublic from "../../components/organisms/NavBotPublic";
-import HeaderSecondary from "../../components/atom/HeaderSecondary";
+import HeaderPrimary from "../../components/atom/HeaderPrimary";
 
 const UkmHome = ({ navigation }) => {
   return (
     <View style={GlobalStyles.container}>
-      <HeaderSecondary title="UKM" />
+      <HeaderPrimary title="UKM" />
 
       <ScrollView
         showsVerticalScrollIndicator={false}

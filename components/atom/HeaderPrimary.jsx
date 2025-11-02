@@ -15,7 +15,7 @@ const HeaderPrimary = ({ title }) => {
         style={{ width: 30, height: 30, marginRight: 10 }}
         resizeMode="contain"
       />
-      <Text style={GlobalStyles.headerTitle}>{title}</Text>
+      <Text style={GlobalStyles.headerTitle2}>{title}</Text>
     </View>
   );
 };

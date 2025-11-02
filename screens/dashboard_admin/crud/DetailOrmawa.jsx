@@ -8,7 +8,7 @@ import HeaderPrimary from "../../../components/atom/HeaderPrimary";
 const DetailOrmawa = ({ navigation }) => {
   const data = {
     namaOrmawa: "Himpunan Informatika",
-    ketua: "Rafi Ahmad",
+    ketua: "Mochammad Suchi Ramadhani",
     deskripsi: "Organisasi mahasiswa jurusan Informatika.",
     kontak: "08123456789",
   };

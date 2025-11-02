@@ -114,9 +114,15 @@ export const GlobalStyles = StyleSheet.create({
     overflow: "hidden",
     elevation: 4,
     shadowColor: Colors.shadow,
-    shadowOpacity: 2,
+    shadowOpacity: 20,
     shadowRadius: 4,
     marginBottom: 15,
+  },
+  cardImage2: {
+    width: "100%",
+    height: 320,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   cardImage: {
     width: "100%",
@@ -129,6 +135,7 @@ export const GlobalStyles = StyleSheet.create({
     alignItems: "center",
     padding: 12,
     gap: 10,
+    backgroundColor: Colors.bgcard,
   },
 
   // ====== ABOUT / LOGIN ======
@@ -351,5 +358,39 @@ export const GlobalStyles = StyleSheet.create({
     color: Colors.textSecondary,
     lineHeight: 18,
   },
+
+    //=====BATIK=====
+    centeredImageContainer: {
+    alignItems: "center",
+    marginVertical: 15,
+    },
+
+    detailImage: {
+      width: "100%",
+      height: 200,
+      borderRadius: 15,
+      marginBottom: 10,
+    },
+
+    itemTitle: {
+      fontSize: 18,
+      fontWeight: "700",
+      color: Colors.primary,
+      marginTop: 5,
+      textAlign: "center",
+    },
+
+    itemSubtitle: {
+      fontSize: 14,
+      color: Colors.textSecondary,
+      marginBottom: 10,
+      textAlign: "center",
+    },
+
+    scrollContent: {
+    padding: 20,
+    paddingBottom: 100,
+  },
+
 
 });

@@ -1,8 +1,8 @@
+// screens/Login.jsx
 import React, { useState, useContext } from "react";
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   Image,
   KeyboardAvoidingView,
@@ -14,6 +14,7 @@ import { AuthContext } from "../context/AuthContext";
 import NavBotPublic from "../components/organisms/NavBotPublic";
 import CardBg from "../components/molecules/CardBg";
 import HeaderPrimary from "../components/atom/HeaderPrimary";
+import InputField from "../components/atom/InputField"; // ✅ gunakan komponen global input
 
 const Login = ({ navigation }) => {
   const { setUser } = useContext(AuthContext);
@@ -21,14 +22,10 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   const handleLogin = () => {
-    console.log("Login ditekan"); // ✅ test apakah fungsi terpanggil
-
     if (username === "admin@uin.ac.id" && password === "admin") {
-      console.log("Admin masuk");
       setUser({ role: "admin", name: "Administrator" });
       navigation.replace("DashboardAdmin");
     } else if (username === "mhs@uin.ac.id" && password === "mhs") {
-      console.log("Mahasiswa masuk");
       setUser({ role: "mahasiswa", name: "Mahasiswa Aktif" });
       navigation.replace("DashboardMhs");
     } else {
@@ -38,7 +35,7 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={GlobalStyles.container}>
-      {/* Header */}
+      {/* HEADER */}
       <HeaderPrimary title="LOGIN SIMAK-UIN" />
 
       <KeyboardAvoidingView
@@ -50,6 +47,7 @@ const Login = ({ navigation }) => {
           contentContainerStyle={GlobalStyles.scrollContainer}
         >
           <CardBg style={{ marginHorizontal: 25 }}>
+            {/* LOGO */}
             <View style={GlobalStyles.loginLogoBox}>
               <Image
                 source={require("../assets/icon.png")}
@@ -58,25 +56,19 @@ const Login = ({ navigation }) => {
               />
             </View>
 
-            <TextInput
+            {/* FORM LOGIN */}
+            <InputField
               placeholder="Email"
-              placeholderTextColor="#999"
               value={username}
               onChangeText={setUsername}
-              style={GlobalStyles.input}
-              autoCapitalize="none"
-              keyboardType="email-address"
             />
 
-            <TextInput
+            <InputField
               placeholder="Password"
-              placeholderTextColor="#999"
-              secureTextEntry
               value={password}
               onChangeText={setPassword}
-              style={GlobalStyles.input}
+              secureTextEntry
             />
-
 
             <TouchableOpacity
               style={GlobalStyles.btnPrimary}

@@ -25,6 +25,7 @@ import DetailOrmawa from "../../screens/dashboard_admin/crud/DetailOrmawa";
 // Mahasiswa Screens
 import DashboardMhs from "../../screens/dashboard_mahasiswa/DashboardMhs";
 import ProfileMhs from "../../screens/dashboard_mahasiswa/ProfileMhs";
+import BatikHome from "../../screens/dashboard_mahasiswa/BatikHome";
 const Stack = createNativeStackNavigator();
 
 
@@ -71,6 +72,8 @@ const NavMain = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="DashboardMhs" component={DashboardMhs} />
         <Stack.Screen name="ProfileMhs" component={ProfileMhs} />
+        <Stack.Screen name="BatikHome" component={BatikHome} />
+        <Stack.Screen name="Login" component={Login} />
       </Stack.Navigator>
     );
   }

@@ -9,27 +9,27 @@ const DashboardMhs = ({ navigation }) => {
   const acaraList = [
     {
       id: 1,
-      image: require("../../assets/event.jpg"),
-      nama: "Festival Seni Kampus 2025",
-      tanggal: "12 November 2025",
-      deskripsi: "Ajang unjuk bakat seni dari mahasiswa lintas jurusan.",
-      pemain: "UKM Musik, UKM Tari, dan Teater UIN",
+      image: require("../../assets/batik.jpg"),
+      nama: "Hari Batik 2025",
+      tanggal: "2 Oktober 2025",
+      deskripsi: "Mari terus lestarikan dan bangga mengenakan batik sebagai identitas bangsa, karena setiap goresannya menyimpan cerita tentang keindahan, kesabaran, dan kebanggaan.",
+      pemain: "Cemara's",
     },
     {
       id: 2,
-      image: require("../../assets/event.jpg"),
-      nama: "Seminar Teknologi & Inovasi",
-      tanggal: "20 November 2025",
-      deskripsi: "Membahas tren AI dan IoT dalam dunia kampus.",
-      pemain: "Himpunan Informatika & Dosen Tamu ITB",
+      image: require("../../assets/haji.jpg"),
+      nama: "Naik Haji bersama mahasiswa UIN",
+      tanggal: "25 Mei 2025",
+      deskripsi: "Belajar haji bukan hanya soal rukun dan syarat, tapi juga tentang hati yang siap berhijrah menuju ridha-Nya.",
+      pemain: "B Boys and B Girls",
     },
     {
       id: 3,
-      image: require("../../assets/event.jpg"),
-      nama: "Lomba Debat Bahasa Inggris",
-      tanggal: "28 November 2025",
-      deskripsi: "Kompetisi debat antar fakultas tingkat universitas.",
-      pemain: "UKM English Club",
+      image: require("../../assets/nari.jpg"),
+      nama: "Pengenalan Dosen Informatika",
+      tanggal: "10 September 2025",
+      deskripsi: "Inilah para dosen Informatika UIN; sosok inspiratif yang nggak cuma ngajarin sintaks dan algoritma, tapi juga nilai, semangat, dan arah menuju masa depan digital yang cerah!",
+      pemain: "Seluruh Mahasiswa dan Dosen Informatika",
     },
   ];
 
@@ -42,7 +42,7 @@ const DashboardMhs = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={GlobalStyles.scrollContainer}
       >
-        <Text style={GlobalStyles.sectionTitle}>Selamat Datang, Dika 👋</Text>
+        <Text style={GlobalStyles.sectionTitle}>Selamat Datang, Dika !</Text>
 
         {/* LIST ACARA */}
         {acaraList.map((item) => (
@@ -50,7 +50,7 @@ const DashboardMhs = ({ navigation }) => {
             key={item.id}
             style={GlobalStyles.cardHomeWithImage}
             activeOpacity={0.9}
-            onPress={() => navigation.navigate("DetailEvent", { item })}
+            onPress={() => navigation.navigate("BatikHome", { item })} // ⬅️ ke halaman detail BatikHome
           >
             <Image source={item.image} style={GlobalStyles.cardImage} />
             <View style={{ padding: 12 }}>
@@ -95,14 +95,6 @@ const DashboardMhs = ({ navigation }) => {
             </View>
           </TouchableOpacity>
         ))}
-
-        {/* INFORMASI TAMBAHAN */}
-        <View style={{ marginTop: 10 }}>
-          <Text style={GlobalStyles.cardTitle}>🎓 Tetap Semangat!</Text>
-          <Text style={GlobalStyles.cardText}>
-            Ikuti semua kegiatan positif kampus, perluas koneksi dan pengalamanmu di UIN.
-          </Text>
-        </View>
       </ScrollView>
 
       {/* NAV BAWAH */}

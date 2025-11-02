@@ -1,28 +1,19 @@
 import React from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { GlobalStyles } from "../../styles/GlobalStyles";
+import InputField from "../atom/InputField";
+import TextLabel from "../atom/TextLabel";
 
-const FormField = ({ label, value, onChangeText, showUpload, onUpload }) => {
+const FormField = ({ label, placeholder, value, onChangeText, secureTextEntry }) => {
   return (
     <View style={GlobalStyles.formField}>
-      <Text style={GlobalStyles.formLabel}>{label}</Text>
-
-      <TextInput
+      <TextLabel text={label} bold size={14} />
+      <InputField
+        placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
-        placeholder={`Masukkan ${label}`}
-        style={GlobalStyles.inputBox}
+        secureTextEntry={secureTextEntry}
       />
-
-      {/* Bagian Upload Gambar */}
-      {showUpload && (
-        <View style={GlobalStyles.uploadSection}>
-          <Text style={GlobalStyles.uploadLabel}>Image:</Text>
-          <TouchableOpacity style={GlobalStyles.uploadBtn} onPress={onUpload}>
-            <Text style={GlobalStyles.uploadBtnText}>Upload Gambar</Text>
-          </TouchableOpacity>
-        </View>
-      )}
     </View>
   );
 };

@@ -9,12 +9,12 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { Colors, GlobalStyles } from "../styles/GlobalStyles";
+import { GlobalStyles } from "../styles/GlobalStyles";
 import { AuthContext } from "../context/AuthContext";
-import NavBotPublic from "../components/organisms/NavBotPublic";
-import CardBg from "../components/molecules/CardBg";
 import HeaderPrimary from "../components/atom/HeaderPrimary";
-import InputField from "../components/atom/InputField"; // ✅ gunakan komponen global input
+import FormField from "../components/molecules/FormField";
+import CardBg from "../components/molecules/CardBg";
+import NavBotPublic from "../components/organisms/NavBotPublic";
 
 const Login = ({ navigation }) => {
   const { setUser } = useContext(AuthContext);
@@ -35,7 +35,6 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={GlobalStyles.container}>
-      {/* HEADER */}
       <HeaderPrimary title="LOGIN SIMAK-UIN" />
 
       <KeyboardAvoidingView
@@ -47,7 +46,6 @@ const Login = ({ navigation }) => {
           contentContainerStyle={GlobalStyles.scrollContainer}
         >
           <CardBg style={{ marginHorizontal: 25 }}>
-            {/* LOGO */}
             <View style={GlobalStyles.loginLogoBox}>
               <Image
                 source={require("../assets/icon.png")}
@@ -56,24 +54,10 @@ const Login = ({ navigation }) => {
               />
             </View>
 
-            {/* FORM LOGIN */}
-            <InputField
-              placeholder="Email"
-              value={username}
-              onChangeText={setUsername}
-            />
+            <FormField label="Email" value={username} onChangeText={setUsername} />
+            <FormField label="Password" value={password} onChangeText={setPassword} secureTextEntry />
 
-            <InputField
-              placeholder="Password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-
-            <TouchableOpacity
-              style={GlobalStyles.btnPrimary}
-              onPress={handleLogin}
-            >
+            <TouchableOpacity style={GlobalStyles.btnPrimary} onPress={handleLogin}>
               <Text style={GlobalStyles.btnText}>Masuk</Text>
             </TouchableOpacity>
           </CardBg>

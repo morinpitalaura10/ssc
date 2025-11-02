@@ -193,6 +193,12 @@ export const GlobalStyles = StyleSheet.create({
     color: Colors.textSecondary,
     marginBottom: 6,
   },
+  textLabel: {
+  fontSize: 16,
+  color: "#020202", // atau pakai Colors.textPrimary
+  fontWeight: "600",
+  marginBottom: 6,
+},
   uploadSection: {
     marginTop: 10,
   },

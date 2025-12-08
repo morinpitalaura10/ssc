@@ -24,10 +24,10 @@ const Login = ({ navigation }) => {
   const handleLogin = () => {
     if (username === "admin@uin.ac.id" && password === "admin") {
       setUser({ role: "admin", name: "Administrator" });
-      navigation.replace("DashboardAdmin");
+
     } else if (username === "mhs@uin.ac.id" && password === "mhs") {
       setUser({ role: "mahasiswa", name: "Mahasiswa Aktif" });
-      navigation.replace("DashboardMhs");
+
     } else {
       alert("Username atau password salah!");
     }

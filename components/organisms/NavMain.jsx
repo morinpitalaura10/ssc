@@ -41,8 +41,8 @@ const NavMain = () => {
         <Stack.Screen name="AboutHome" component={AboutHome} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="OrmawaHome" component={OrmawaHome} />
-          <Stack.Screen name="UkmHome" component={UkmHome} />
-          <Stack.Screen name="AcaraHome" component={AcaraHome} />
+        <Stack.Screen name="UkmHome" component={UkmHome} />
+        <Stack.Screen name="AcaraHome" component={AcaraHome} />
       </Stack.Navigator>
     );
   }
@@ -61,7 +61,7 @@ const NavMain = () => {
         <Stack.Screen name="DeleteOrmawa" component={DeleteOrmawa} />
         <Stack.Screen name="UpdateOrmawa" component={UpdateOrmawa} />
         <Stack.Screen name="DetailOrmawa" component={DetailOrmawa} />
-        <Stack.Screen name="Login" component={Login} />
+
       </Stack.Navigator>
     );
   }
@@ -73,7 +73,7 @@ const NavMain = () => {
         <Stack.Screen name="DashboardMhs" component={DashboardMhs} />
         <Stack.Screen name="ProfileMhs" component={ProfileMhs} />
         <Stack.Screen name="BatikHome" component={BatikHome} />
-        <Stack.Screen name="Login" component={Login} />
+
       </Stack.Navigator>
     );
   }

@@ -37,7 +37,7 @@ const CrudOrmawa = ({ navigation }) => {
           onPress={() => navigation.navigate("DetailOrmawa")}
         >
           <Ionicons
-            name="information-circle" size={45} color={Colors.primary}/>
+            name="information-circle" size={45} color={Colors.primary} />
           <Text style={GlobalStyles.crudLabel}>DETAIL</Text>
         </TouchableOpacity>
 

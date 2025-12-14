@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import { GlobalStyles } from "../../styles/GlobalStyles";
 import NavBotAdmin from "../../components/organisms/NavBotAdmin";
 import HeaderPrimary from "../../components/atom/HeaderPrimary";
+import { AuthContext } from "../../context/AuthContext";
 
 const DashboardAdmin = ({ navigation }) => {
+  const { user } = useContext(AuthContext); // ✅ ambil dari login
+
   const menuAdmin = [
     {
       id: 1,
@@ -22,13 +25,20 @@ const DashboardAdmin = ({ navigation }) => {
     },
     {
       id: 3,
-      title: "KELOLA EVENT KAMPUS",
+      title: "KELOLA ACARA KAMPUS",
       desc: "Tambah, edit, atau hapus acara dan event kampus.",
       image: require("../../assets/event.jpg"),
       nav: "CrudAcara",
     },
     {
       id: 4,
+      title: "KELOLA UKM KAMPUS",
+      desc: "Tambah, edit, atau hapus UKM kampus.",
+      image: require("../../assets/ormawa.jpg"),
+      nav: "CrudUKM",
+    },
+    {
+      id: 5,
       title: "PENGATURAN SISTEM",
       desc: "Ubah konfigurasi aplikasi dan data umum kampus.",
       image: require("../../assets/icon.png"),
@@ -38,17 +48,16 @@ const DashboardAdmin = ({ navigation }) => {
 
   return (
     <View style={GlobalStyles.container}>
-      {/* HEADER */}
       <HeaderPrimary title="ADMIN" />
 
-      {/* KONTEN UTAMA */}
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={GlobalStyles.scrollContainer}
       >
-        <Text style={GlobalStyles.welcomeText}>Selamat Datang, Morin !</Text>
+        <Text style={GlobalStyles.welcomeText}>
+          Selamat Datang, {user?.name || "Admin"} !
+        </Text>
 
-        {/* CARD CRUD MENU */}
         {menuAdmin.map((item) => (
           <TouchableOpacity
             key={item.id}
@@ -65,7 +74,6 @@ const DashboardAdmin = ({ navigation }) => {
         ))}
       </ScrollView>
 
-      {/* NAV BAWAH */}
       <NavBotAdmin navigation={navigation} />
     </View>
   );

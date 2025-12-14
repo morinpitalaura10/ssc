@@ -125,8 +125,8 @@ export const GlobalStyles = StyleSheet.create({
     borderTopRightRadius: 15,
   },
   cardImage: {
-    width: "100%",
-    height: 160,
+    width: "150%",
+    height: 260,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },
@@ -194,11 +194,11 @@ export const GlobalStyles = StyleSheet.create({
     marginBottom: 6,
   },
   textLabel: {
-  fontSize: 16,
-  color: "#020202", // atau pakai Colors.textPrimary
-  fontWeight: "600",
-  marginBottom: 6,
-},
+    fontSize: 16,
+    color: "#020202", // atau pakai Colors.textPrimary
+    fontWeight: "600",
+    marginBottom: 6,
+  },
   uploadSection: {
     marginTop: 10,
   },
@@ -342,7 +342,7 @@ export const GlobalStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
   },
-    // ====== DASHBOARD ADMIN ======
+  // ====== DASHBOARD ADMIN ======
   welcomeText: {
     fontSize: 18,
     fontWeight: "700",
@@ -365,38 +365,489 @@ export const GlobalStyles = StyleSheet.create({
     lineHeight: 18,
   },
 
-    //=====BATIK=====
-    centeredImageContainer: {
+  //=====BATIK=====
+  centeredImageContainer: {
     alignItems: "center",
     marginVertical: 15,
-    },
+  },
 
-    detailImage: {
-      width: "100%",
-      height: 200,
-      borderRadius: 15,
-      marginBottom: 10,
-    },
+  detailImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 15,
+    marginBottom: 10,
+  },
 
-    itemTitle: {
-      fontSize: 18,
-      fontWeight: "700",
-      color: Colors.primary,
-      marginTop: 5,
-      textAlign: "center",
-    },
+  itemTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: Colors.primary,
+    marginTop: 5,
+    textAlign: "center",
+  },
 
-    itemSubtitle: {
-      fontSize: 14,
-      color: Colors.textSecondary,
-      marginBottom: 10,
-      textAlign: "center",
-    },
+  itemSubtitle: {
+    fontSize: 14,
+    color: Colors.textSecondary,
+    marginBottom: 10,
+    textAlign: "center",
+  },
 
-    scrollContent: {
+  scrollContent: {
     padding: 20,
     paddingBottom: 100,
   },
+
+  // ===== CRUD MAHASISWA LIST =====
+  stickyTopBar: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 10,
+    backgroundColor: "#fff",
+  },
+  addBtn: {
+    backgroundColor: Colors.primary,
+    paddingVertical: 12,
+    borderRadius: 14,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 8,
+  },
+  addBtnText: {
+    color: "#fff",
+    fontWeight: "800",
+  },
+  errorText: {
+    marginTop: 10,
+    color: Colors.danger,
+  },
+
+  listContainer: {
+    paddingHorizontal: 16,
+    paddingBottom: 120,
+  },
+
+  centerContent: {
+    paddingTop: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  mhsCard: {
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 14,
+    marginBottom: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    elevation: 2,
+  },
+  mhsAvatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 15,
+    marginRight: 30,
+    marginLeft: 30,
+  },
+  mhsAvatarFallback: {
+    width: 56,
+    height: 56,
+    borderRadius: 12,
+    marginRight: 12,
+    backgroundColor: "#eee",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  mhsInfo: {
+    flex: 1,
+  },
+  mhsName: {
+    fontSize: 18,
+    fontWeight: "700",
+  },
+  mhsMeta: {
+    marginTop: 2,
+    color: "#666",
+  },
+  mhsActionsRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 10,
+  },
+  mhsActionBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  mhsActionText: {
+    color: Colors.primary,
+    fontWeight: "600",
+  },
+  mhsDeleteBtn: {
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#f2c0c0",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  mhsDeleteText: {
+    color: Colors.danger,
+    fontWeight: "700",
+  },
+
+  listContainerEmpty: {
+    flexGrow: 1,
+    justifyContent: "center",
+  },
+
+  emptyWrap: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 30,
+  },
+
+  emptyText: {
+    marginTop: 8,
+    fontWeight: "700",
+    color: "#666",
+  },
+
+  // ===== FORM (ADD MAHASISWA) =====
+  formContainer: { flex: 1 },
+  formContent: { paddingBottom: 140 },
+
+  formWrap: {
+    paddingHorizontal: 16,
+    width: "100%",
+    maxWidth: 520,
+    alignSelf: "center",
+  },
+
+  pickerLoading: {
+    paddingVertical: 14,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 8,
+  },
+  pickerLoadingText: {
+    color: "#666",
+    fontWeight: "700",
+  },
+
+  formLabel: {
+    marginTop: 12,
+    marginBottom: 6,
+    fontWeight: "700",
+    color: "#333",
+  },
+
+  formInput: {
+    backgroundColor: "#fff",
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: "#e5e5e5",
+  },
+
+  pickerWrap: {
+    backgroundColor: "#fff",
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#e5e5e5",
+    overflow: "hidden",
+  },
+  picker: {
+    width: "100%",
+  },
+
+  avatarBox: {
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    padding: 12,
+    borderWidth: 1,
+    borderColor: "#e5e5e5",
+  },
+  avatarPreview: {
+    width: "100%",
+    height: 180,
+    borderRadius: 14,
+  },
+  avatarPlaceholder: {
+    width: "100%",
+    height: 180,
+    borderRadius: 14,
+    backgroundColor: "#f0f0f0",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarPlaceholderText: {
+    color: "#777",
+    fontWeight: "700",
+  },
+
+  secondaryBtn: {
+    marginTop: 10,
+    borderRadius: 14,
+    paddingVertical: 12,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+  secondaryBtnText: {
+    fontWeight: "800",
+    color: "#333",
+  },
+
+  uploadRow: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  uploadText: {
+    color: "#666",
+    fontWeight: "700",
+  },
+
+  primaryBtn: {
+    marginTop: 18,
+    backgroundColor: Colors.primary,
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: "center",
+  },
+  primaryBtnText: {
+    color: "#fff",
+    fontWeight: "900",
+  },
+
+  cancelBtn: {
+    marginTop: 10,
+    borderRadius: 14,
+    paddingVertical: 14,
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+  },
+  cancelBtnText: {
+    fontWeight: "900",
+    color: "#333",
+  },
+
+  // ===== FORM PAGE (like dosen) =====
+  formPageContent: {
+    padding: 20,
+    paddingBottom: 120,
+  },
+
+  previewCenterWrap: {
+    alignItems: "center",
+    marginBottom: 15,
+  },
+
+  previewAvatar: {
+    width: 110,
+    height: 110,
+    borderRadius: 12,
+  },
+
+  helperTextUpload: {
+    fontSize: 10,
+    color: "#aaa",
+    fontStyle: "italic",
+    marginBottom: 10,
+    marginTop: -5,
+  },
+
+  btnPrimaryTopSpace: {
+    marginTop: 20,
+  },
+
+  btnPrimaryLoading: {
+    opacity: 0.7,
+  },
+  // ===== READ/DETAIL MAHASISWA =====
+  detailContent: {
+    padding: 16,
+    paddingBottom: 130,
+  },
+
+  detailCard: {
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    borderRadius: 18,
+    padding: 14,
+    borderWidth: 1,
+    borderColor: "#eee",
+  },
+
+  detailAvatar: {
+    width: 90,
+    height: 90,
+    borderRadius: 10, // kotak sedikit rounded
+    marginRight: 12,
+  },
+
+  detailAvatarFallback: {
+    width: 90,
+    height: 90,
+    borderRadius: 10,
+    marginRight: 12,
+    backgroundColor: "#f2f2f2",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  detailInfo: {
+    flex: 1,
+  },
+
+  detailName: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: "#111",
+  },
+
+  detailMeta: {
+    marginTop: 2,
+    color: "#666",
+    fontWeight: "600",
+  },
+
+  detailDivider: {
+    height: 1,
+    backgroundColor: "#eee",
+    marginVertical: 10,
+  },
+
+  detailLine: {
+    color: "#333",
+    marginBottom: 6,
+  },
+
+  detailLabel: {
+    fontWeight: "800",
+    color: "#111",
+  },
+
+  detailActions: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 14,
+  },
+
+  // ===== READ MAHASISWA (Profil-style) =====
+  readScrollContent: {
+    paddingHorizontal: 12,   // ✅ lebih mepet ke sisi
+    paddingTop: 16,
+    paddingBottom: 120,
+  },
+
+  readAvatarWrap: {
+    alignItems: "center",
+    marginBottom: 14,
+  },
+
+  readAvatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: Colors.primary,
+  },
+
+  readAvatarFallback: {
+    width: 100,              // ✅ samain ukuran dengan readAvatar
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 3,
+    borderColor: Colors.primary,
+    backgroundColor: "#f2f2f2",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  readFieldWrap: {
+    marginBottom: 10,
+  },
+
+  readFieldLabel: {
+    fontSize: 13,           // ✅ biar mirip form label
+    fontWeight: "800",
+    color: Colors.primary,
+    marginBottom: 6,
+  },
+
+  readFieldBox: {
+    backgroundColor: "#f8dede",
+    borderRadius: 10,
+    paddingVertical: 11,
+    paddingHorizontal: 12,
+    borderWidth: 1,
+    borderColor: "#f0caca",
+  },
+
+  readFieldValue: {
+    color: "#333",
+    fontWeight: "700",
+  },
+
+  readActionsRow: {
+    flexDirection: "row",
+    marginTop: 16,
+    gap: 10,
+  },
+
+  // ✅ tombol kembali khusus (lebih enak dilihat)
+  readBackBtn: {
+    flex: 1,
+    height: 44,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  readBackBtnText: {
+    fontWeight: "800",
+    color: Colors.primary,
+  },
+
+  // ===== READ BUTTON (biar keren & ga jelek) =====
+  readBackBtn: {
+    flex: 1,
+    backgroundColor: Colors.primary,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  readBackBtnText: {
+    color: "#fff",
+    fontWeight: "800",
+  },
+
+  // ===== CARD biar ga terlalu minggir (kalau CardBg kamu belum rapi) =====
+  // pastiin CardBg wrapper-nya ga nempel kiri/kanan
+  cardSectionTitle: {
+    marginBottom: 12,
+  },
+
+
 
 
 });

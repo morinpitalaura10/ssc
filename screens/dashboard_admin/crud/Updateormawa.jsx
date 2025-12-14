@@ -1,199 +1,322 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Alert, ActivityIndicator, Image } from "react-native";
-import { GlobalStyles } from "../../../styles/GlobalStyles";
-import CardBg from "../../../components/molecules/CardBg";
-import NavBotAdmin from "../../../components/organisms/NavBotAdmin";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Alert,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system/legacy";
 import HeaderPrimary from "../../../components/atom/HeaderPrimary";
-import FormField from "../../../components/molecules/FormField";
+import NavBotAdmin from "../../../components/organisms/NavBotAdmin";
+import { GlobalStyles } from "../../../styles/GlobalStyles";
 import { supabase } from "../../../utils/supabase";
-import * as ImagePicker from 'expo-image-picker';
-
 
 const UpdateOrmawa = ({ navigation, route }) => {
-  const { item } = route.params || {};
+  const { id_ormawa } = route.params || {};
 
+  const [nama_ormawa, setNamaOrmawa] = useState("");
+  const [kepanjangan, setKepanjangan] = useState("");
+  const [nama_ketum, setNamaKetum] = useState("");
+  const [jumlah_anggota, setJumlahAnggota] = useState("");
+  const [total_depart, setTotalDepart] = useState("");
+  const [deskripsi_ormawa, setDeskripsi] = useState("");
+  const [since, setSince] = useState("");
 
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({
-    namaOrmawa: "",
-    ketua: "",
-    deskripsi: "",
-    kontak: "",
-    gambarOrmawa: null,
-  });
+  const [imageUri, setImageUri] = useState("");       // local
+  const [oldImageUrl, setOldImageUrl] = useState(""); // existing url
 
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const fetchDetail = useCallback(async () => {
+    if (!id_ormawa) {
+      Alert.alert("Gagal", "id_ormawa tidak ditemukan.");
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("tb_ormawa")
+      .select(
+        "id_ormawa, nama_ormawa, kepanjangan, nama_ketum, jumlah_anggota, total_depart, deskripsi_ormawa, logo_ormawa, since"
+      )
+      .eq("id_ormawa", id_ormawa)
+      .single();
+
+    if (error) {
+      Alert.alert("Gagal", error.message);
+      setLoading(false);
+      return;
+    }
+
+    setNamaOrmawa(data?.nama_ormawa || "");
+    setKepanjangan(data?.kepanjangan || "");
+    setNamaKetum(data?.nama_ketum || "");
+    setJumlahAnggota(data?.jumlah_anggota != null ? String(data.jumlah_anggota) : "");
+    setTotalDepart(data?.total_depart != null ? String(data.total_depart) : "");
+    setDeskripsi(data?.deskripsi_ormawa || "");
+    setSince(data?.since ? String(data.since) : "");
+    setOldImageUrl(data?.logo_ormawa || "");
+
+    setLoading(false);
+  }, [id_ormawa]);
 
   useEffect(() => {
-    if (item) {
-      setData({
-        namaOrmawa: item.nama_ormawa || "",
-        ketua: item.ketua || "",
-        deskripsi: item.desc || "",
-        contact: item.contact || "",
-        gambarOrmawa: item.logo || null,
-      });
+    fetchDetail();
+  }, [fetchDetail]);
+
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Izin ditolak", "Aplikasi butuh akses galeri untuk pilih gambar.");
+      return;
     }
-  }, [item]);
 
-
-  const handlePickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.Images,
       allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.7,
+      quality: 0.8,
     });
 
+    if (!result.canceled) setImageUri(result.assets[0].uri);
+  };
 
-    if (!result.canceled) {
-      setData({ ...data, gambarOrmawa: result.assets[0].uri });
+  const decode = (base64) => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    const len = base64.length;
+    const bufferLength = base64.length * 0.75;
+    const arraybuffer = new ArrayBuffer(bufferLength);
+    const bytes = new Uint8Array(arraybuffer);
+    let p = 0;
+
+    for (let i = 0; i < len; i += 4) {
+      const encoded1 = chars.indexOf(base64[i]);
+      const encoded2 = chars.indexOf(base64[i + 1]);
+      const encoded3 = chars.indexOf(base64[i + 2]);
+      const encoded4 = chars.indexOf(base64[i + 3]);
+
+      bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
+      if (encoded3 !== 64) bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);
+      if (encoded4 !== 64) bytes[p++] = ((encoded3 & 3) << 6) | encoded4;
+    }
+    return arraybuffer;
+  };
+
+  const uploadLogoToStorage = async (uri) => {
+    setUploading(true);
+    try {
+      const fileName = `public/logo_ormawa${Date.now()}.jpg`;
+
+      const base64 = await FileSystem.readAsStringAsync(uri, { encoding: "base64" });
+      const arrayBuffer = decode(base64);
+
+      const { error: uploadError } = await supabase.storage
+        .from("logo_ormawa")
+        .upload(fileName, arrayBuffer, {
+          contentType: "image/jpeg",
+          upsert: true,
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage.from("logo_ormawa").getPublicUrl(fileName);
+      return data?.publicUrl || "";
+    } finally {
+      setUploading(false);
     }
   };
 
-
-  const uploadImage = async (uri) => {
-    if (!uri.startsWith('file://')) return uri; // Sudah URL remote
-
-
-    const ext = uri.substring(uri.lastIndexOf('.') + 1);
-    const fileName = `ormawa_${Date.now()}.${ext}`;
-
-
-    const formData = new FormData();
-    formData.append('file', {
-      uri: uri,
-      name: fileName,
-      type: `image/${ext}`
-    });
-
-
-    // Supabase JS v2 upload
-    const { data: uploadData, error } = await supabase.storage
-      .from('logo_ormawa')
-      .upload(fileName, formData, {
-        cacheControl: '3600',
-        upsert: false
-      });
-
-
-    if (error) throw error;
-
-
-    // Get Public URL
-    const { data: publicUrlData } = supabase.storage
-      .from('logo_ormawa')
-      .getPublicUrl(fileName);
-
-
-    return publicUrlData.publicUrl;
+  const validate = () => {
+    const errors = [];
+    if (!nama_ormawa.trim()) errors.push("• Nama ormawa wajib diisi");
+    if (!nama_ketum.trim()) errors.push("• Nama ketum wajib diisi");
+    if (!deskripsi_ormawa.trim()) errors.push("• Deskripsi wajib diisi");
+    return errors;
   };
-
 
   const handleUpdate = async () => {
-    if (!item?.id) return;
-    setLoading(true);
+    const errors = validate();
+    if (errors.length > 0) {
+      Alert.alert("Gagal", errors.join("\n"));
+      return;
+    }
 
-
+    setSaving(true);
     try {
-      let imageUrl = data.gambarOrmawa;
+      let logo_ormawa = oldImageUrl || "";
+      if (imageUri) logo_ormawa = await uploadLogoToStorage(imageUri);
 
-
-      // Jika gambar berubah (masih lokal URI), upload dulu
-      if (data.gambarOrmawa && data.gambarOrmawa.startsWith('file://')) {
-        imageUrl = await uploadImage(data.gambarOrmawa);
-      }
-
+      const payload = {
+        nama_ormawa: nama_ormawa.trim(),
+        kepanjangan: kepanjangan.trim(),
+        nama_ketum: nama_ketum.trim(),
+        jumlah_anggota: jumlah_anggota ? Number(jumlah_anggota) : null,
+        total_depart: total_depart ? Number(total_depart) : null,
+        deskripsi_ormawa: deskripsi_ormawa.trim(),
+        since: since.trim() ? since.trim() : null,
+        logo_ormawa,
+      };
 
       const { error } = await supabase
-        .from('tbl_ormawa')
-        .update({
-          nama_ormawa: data.namaOrmawa,
-          ketua: data.ketua,
-          desc: data.deskripsi,
-          contact: data.contact,
-          logo: imageUrl
-        })
-        .eq('id', item.id);
+        .from("tb_ormawa")
+        .update(payload)
+        .eq("id_ormawa", id_ormawa);
 
+      if (error) {
+        Alert.alert("Gagal", error.message);
+        return;
+      }
 
-      if (error) throw error;
-
-
-      Alert.alert("Sukses", "Data berhasil diperbarui!", [
-        { text: "OK", onPress: () => navigation.navigate("CrudOrmawa") } // atau navigation.goBack()
+      Alert.alert("Berhasil", "Data ormawa berhasil diperbarui.", [
+        { text: "OK", onPress: () => navigation.goBack() },
       ]);
     } catch (err) {
-      Alert.alert("Error", err.message);
+      console.error(err);
+      Alert.alert("Error", err.message || "Terjadi kesalahan sistem");
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
-
-
-  if (!item) {
-    return (
-      <View style={GlobalStyles.container}>
-        <HeaderPrimary title="UPDATE ORMAWA" />
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ color: 'white' }}>Data Ormawa tidak ditemukan.</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={{ marginTop: 20 }}>
-            <Text style={{ color: 'yellow' }}>Kembali</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-
 
   return (
     <View style={GlobalStyles.container}>
-      <HeaderPrimary title="UPDATE ORMAWA" />
-      <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 100 }}>
-        <CardBg>
-          <Text style={GlobalStyles.sectionTitle}>Perbarui Data ORMAWA</Text>
+      <HeaderPrimary title="EDIT ORMAWA" />
 
+      {loading ? (
+        <View style={GlobalStyles.centerContent}>
+          <ActivityIndicator size="small" />
+        </View>
+      ) : (
+        <ScrollView
+          style={GlobalStyles.formContainer}
+          contentContainerStyle={GlobalStyles.formContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={GlobalStyles.formWrap}>
+            <Text style={GlobalStyles.formLabel}>Logo Ormawa</Text>
+            <View style={GlobalStyles.avatarBox}>
+              {imageUri ? (
+                <Image source={{ uri: imageUri }} style={GlobalStyles.avatarPreview} />
+              ) : oldImageUrl ? (
+                <Image source={{ uri: oldImageUrl }} style={GlobalStyles.avatarPreview} />
+              ) : (
+                <View style={GlobalStyles.avatarPlaceholder}>
+                  <Text style={GlobalStyles.avatarPlaceholderText}>Belum ada gambar</Text>
+                </View>
+              )}
 
-          {/* Preview Image */}
-          {data.gambarOrmawa ? (
-            <View style={{ alignItems: 'center', marginBottom: 15 }}>
-              <Image
-                source={{ uri: data.gambarOrmawa }}
-                style={{ width: 100, height: 100, borderRadius: 10 }}
-              />
+              <TouchableOpacity
+                style={GlobalStyles.secondaryBtn}
+                activeOpacity={0.85}
+                onPress={pickImage}
+                disabled={saving || uploading}
+              >
+                <Text style={GlobalStyles.secondaryBtnText}>Pilih Gambar</Text>
+              </TouchableOpacity>
+
+              {uploading ? (
+                <View style={GlobalStyles.uploadRow}>
+                  <ActivityIndicator size="small" />
+                  <Text style={GlobalStyles.uploadText}>Uploading...</Text>
+                </View>
+              ) : null}
             </View>
-          ) : null}
 
+            <Text style={GlobalStyles.formLabel}>Nama Ormawa</Text>
+            <TextInput
+              style={GlobalStyles.formInput}
+              placeholder="Masukkan nama ormawa"
+              value={nama_ormawa}
+              onChangeText={setNamaOrmawa}
+            />
 
-          <FormField label="Nama ORMAWA" value={data.namaOrmawa} onChangeText={(t) => setData({ ...data, namaOrmawa: t })} />
-          <FormField label="Nama Ketua" value={data.ketua} onChangeText={(t) => setData({ ...data, ketua: t })} />
+            <Text style={GlobalStyles.formLabel}>Kepanjangan</Text>
+            <TextInput
+              style={GlobalStyles.formInput}
+              placeholder="Masukkan kepanjangan"
+              value={kepanjangan}
+              onChangeText={setKepanjangan}
+            />
 
+            <Text style={GlobalStyles.formLabel}>Nama Ketum</Text>
+            <TextInput
+              style={GlobalStyles.formInput}
+              placeholder="Masukkan nama ketua umum"
+              value={nama_ketum}
+              onChangeText={setNamaKetum}
+            />
 
-          <FormField
-            label="Deskripsi"
-            value={data.deskripsi}
-            onChangeText={(t) => setData({ ...data, deskripsi: t })}
-            showUpload
-            onUpload={handlePickImage}
-          />
-          <Text style={{ fontSize: 10, color: '#aaa', fontStyle: 'italic', marginBottom: 10, marginTop: -5 }}>*Klik ikon upload di kanan untuk ganti gambar</Text>
+            <Text style={GlobalStyles.formLabel}>Jumlah Anggota</Text>
+            <TextInput
+              style={GlobalStyles.formInput}
+              placeholder="Contoh: 120"
+              value={jumlah_anggota}
+              onChangeText={setJumlahAnggota}
+              keyboardType="numeric"
+            />
 
+            <Text style={GlobalStyles.formLabel}>Total Depart</Text>
+            <TextInput
+              style={GlobalStyles.formInput}
+              placeholder="Contoh: 6"
+              value={total_depart}
+              onChangeText={setTotalDepart}
+              keyboardType="numeric"
+            />
 
-          <FormField label="Kontak" value={data.contact} onChangeText={(t) => setData({ ...data, contact: t })} />
+            <Text style={GlobalStyles.formLabel}>Deskripsi</Text>
+            <TextInput
+              style={[GlobalStyles.formInput, { height: 110, textAlignVertical: "top" }]}
+              placeholder="Masukkan deskripsi"
+              value={deskripsi_ormawa}
+              onChangeText={setDeskripsi}
+              multiline
+            />
 
+            <Text style={GlobalStyles.formLabel}>Since (opsional)</Text>
+            <TextInput
+              style={GlobalStyles.formInput}
+              placeholder="YYYY-MM-DD"
+              value={since}
+              onChangeText={setSince}
+            />
 
-          <TouchableOpacity
-            style={[GlobalStyles.btnPrimary, { marginTop: 20, opacity: loading ? 0.7 : 1 }]}
-            onPress={handleUpdate}
-            disabled={loading}
-          >
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={GlobalStyles.btnText}>Simpan Perubahan</Text>}
-          </TouchableOpacity>
-        </CardBg>
-      </ScrollView>
+            <TouchableOpacity
+              style={GlobalStyles.primaryBtn}
+              activeOpacity={0.85}
+              onPress={handleUpdate}
+              disabled={saving || uploading}
+            >
+              {saving ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                <Text style={GlobalStyles.primaryBtnText}>Simpan Perubahan</Text>
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={GlobalStyles.cancelBtn}
+              activeOpacity={0.85}
+              onPress={() => navigation.goBack()}
+              disabled={saving || uploading}
+            >
+              <Text style={GlobalStyles.cancelBtnText}>Batal</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      )}
+
       <NavBotAdmin navigation={navigation} />
     </View>
   );
 };
-
 
 export default UpdateOrmawa;
